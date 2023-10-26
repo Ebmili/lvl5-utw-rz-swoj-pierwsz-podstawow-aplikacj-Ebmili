@@ -21,6 +21,11 @@ app.get('/schedules', (req, res) => {
 
 app.get('/users/:userId/schedules', (req, res) => {
   const userId = parseInt(req.params.userId);
+
+  if (isNaN(userId)) {
+    return res.status(400).json({ error: 'Invalid userId' });
+  }
+
   res.json(userId);
 });
 
@@ -30,9 +35,10 @@ app.get('/users/:userId', (req, res) => {
 
   if (!user) {
     res.status(404).json({ error: 'User not found' });
-  } else {
-    res.json(user);
+    return;
   }
+
+  res.json(user);
 });
 
 app.post('/schedules', (req, res) => {
@@ -55,7 +61,6 @@ app.post('/users', (req, res) => {
   users.push(newUser);
   res.json(newUser);
 });
-
 
 
 app.listen(port, () => {
